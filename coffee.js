@@ -1,3 +1,4 @@
+
 CoffeeMoto = {
   color1: '',
   color2: '',
@@ -76,53 +77,6 @@ if (Meteor.isClient) {
     return Tastings.find({}, {sort: {user : 1}});
   };
 
-/*
-  Template.enter_name.events({
-    'click input.add':function(e) {
-      if(e.keyIdentifier == 'Enter' || e.keyIdentifier == undefined) {
-        var entered_name = document.getElementById('user_name').value;
-      }
-    }
-  })
-  Template.coffee_type.events({
-
-  })
-  Template.impressions.events({
-    'click input.impression': function(e) {
-      var impressions = impressions || [];
-      var key = e.getAttribute("data-type");
-      var value = document.getElementById('')
-    }
-  })
-*/
-  Template.taste_words.events({
-  'click input.flavor': function(e) {
-    flavors.push(e.srcElement.value);
-    console.log(flavors);
-  },
-  // let's just assume that it's going to be a complete/finalize button
-  'click input.finalize': function(e) {
-      if(e.keyIdentifier == 'Enter' || e.keyIdentifier === undefined) {
-
-        Cuppings.insert({
-          user: document.getElementById('user_name').value, //entered_name,
-          cup: 1, //cup_int
-          tastes: flavors, //tastes from this template
-          impressions: { // from impressions object
-            overall: 1,
-            aroma: 0,
-            acidity: 1,
-            body: 0
-          }
-        });
-
-      }
-    }
-  });
-
-  Template.taste_words.greeting = function () {
-    return "All the coffee tasting!";
-  };
   Template.taste_words.cuppings = function () {
     return Cuppings.find({}, {sort: {user : 1}});
   };
@@ -178,25 +132,49 @@ if (Meteor.isClient) {
 
                 // add in data logic here, the cuppings insert
                 var name = $('.name').text();
-                var cupSelected = $('.tastes').text();
-                var tastings = $('.taste.selected').map(function() { return $(this).text() })
+                var cupSelected = $('.tastes').text().split('#')[1];
 
+                impressionSelections = []
+
+                if ($('.selected.overall').hasClass('btn-yes')) {
+                  impressionSelections.push(1)
+                } else {
+                  impressionSelections.push(0)
+                }
+                if ($('.selected.aroma').hasClass('btn-yes')) {
+                  impressionSelections.push(1)
+                } else {
+                  impressionSelections.push(0)
+                }
+                if ($('.selected.acidity').hasClass('btn-yes')) {
+                  impressionSelections.push(0)
+                } else {
+                  impressionSelections.push(1)
+                }
+                if ($('.selected.body').hasClass('btn-yes')) {
+                  impressionSelections.push(1)
+                } else {
+                  impressionSelections.push(0)
+                }
+                var selectedTastes = $('.taste.selected').map(function() { return $(this).text() })
+                var arr = []
+                selectedTastes.each(function(i) { arr.push(selectedTastes[i]) })
 
                 Cuppings.insert({
                   user: name, //entered_name,
                   cup: cupSelected, //cup_int
-                  tastes: ['oranges'], //tastings, //tastes from this template
+                  tastes: arr, //tastings, //tastes from this template
                   impressions: { // from impressions object
-                    overall: 1,
-                    aroma: 0,
-                    acidity: 1,
-                    body: 0
+                    overall: impressionSelections[0],
+                    aroma: impressionSelections[1],
+                    acidity: impressionSelections[2],
+                    body: impressionSelections[3]
                   }
                 });
 
                 Cuppings.find().forEach(function(i) {console.log(i)})
 
-                // document.location.href = '/';
+                alert('thanks for your submission!');
 
 
                 // CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() {
