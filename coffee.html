@@ -1,0 +1,38 @@
+<head>
+  <title>coffee</title>
+</head>
+
+<body>
+  {{> hello}}
+</body>
+
+<template name="hello">
+  <h1>Hello World!</h1>
+  {{greeting}}
+  <input type="button" value="Add Cupping" />
+  <h1>Cuppings</h1>
+  {{#each cuppings}}
+  	{{> cupping}}
+  {{/each}}
+</template>
+
+<template name="cupping">
+	<div class="cupping {{selected}}">
+		<p><strong><span class="name">{{user}}</span></strong><br/>
+		<span class="tastes">Tastes: {{tastes}}</span></p>
+	</div>
+</template>
+
+<template name="add_cupping">
+	<div class="cupping new">
+		<p>Name<input type="text"></input></p>
+		<p>Cup<input type="text"></input></p>
+		{{#each tastings}}
+		  {{> tasting}}
+		{{/each}}
+	</div>
+</template>
+
+<template name="tasting">
+	<p>Flavors<input type="text"></input></p>
+</template>
