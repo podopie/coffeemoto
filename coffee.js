@@ -162,6 +162,7 @@ if (Meteor.isClient) {
 
                 Cuppings.insert({
                   user: name, //entered_name,
+                  ISOdate: new Date(),
                   cup: cupSelected, //cup_int
                   tastes: arr, //tastings, //tastes from this template
                   impressions: { // from impressions object
