@@ -49,7 +49,6 @@ env = "destroy"     // kill all test data
 
 */
 
-var env = "dev-test";
 var flavors = flavors || []; // testing what variables need to be used through a cupping
 
 /* 
@@ -215,25 +214,5 @@ if (Meteor.isServer) {
         });
       }
     }
-/*    if (env == "dev-test" && Cuppings.find().count() === 0) {
-      var users = ["Aggie Add",
-                  "Blockey Block",
-                  "Christopher Cares",
-                  "Dangerous Dubs"];
-      for (var i = 0; i < users.length; i++) {
-        Cuppings.insert({
-          user: users[i],
-          cup: 1,
-          tastes: [tastes_corpus[i + 1], tastes_corpus[i + 3]]
-        });
-      }
-    } else if (env == "destroy") {
-      Cuppings.find().forEach(function(cupping) {
-        Cuppings.remove(cupping._id)
-      })
-      Tastings.find().forEach(function(tasting) {
-        Tastings.remove(tasting._id)
-      })
-    }*/
   });
 }
