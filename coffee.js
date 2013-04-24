@@ -210,7 +210,7 @@ if (Meteor.isServer) {
         });
       }
     }
-    if (env == "dev-test" && Cuppings.find().count() === 0) {
+/*    if (env == "dev-test" && Cuppings.find().count() === 0) {
       var users = ["Aggie Add",
                   "Blockey Block",
                   "Christopher Cares",
@@ -229,6 +229,6 @@ if (Meteor.isServer) {
       Tastings.find().forEach(function(tasting) {
         Tastings.remove(tasting._id)
       })
-    }
+    }*/
   });
 }
