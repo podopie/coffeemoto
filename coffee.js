@@ -1,23 +1,42 @@
 CoffeeMoto = {
-  showTemplate: function(templatename) {
+  color1: '',
+  color2: '',
+  color3: '',
+  showTemplate: function(current,templatename,hidecurrent,callback) {
     var existing = $('.template-' + templatename);
-    var current = $('.template-visible');
     if (!existing.length) {
       var details = $(Meteor.render(Template[templatename]));
       var wrapper = $('<div class="template-wrapper template-' + templatename + '">');
-      $('#main').append(wrapper);
+      current.parent().append(wrapper);
       wrapper.append(details);
       existing = wrapper;
     }
-    current.on('webkitTransitionEnd',function(e)
-    {
-      current.removeClass('template-previsible');
+    if (hidecurrent) {
+      current.on('webkitTransitionEnd',function(e)
+      {
+        CoffeeMoto.setAvatarColors();
+        current.removeClass('template-previsible');
+        existing.addClass('template-previsible');
+        existing.addClass('template-visible');
+        if (typeof callback == 'function')
+          callback();
+      });
+      current.removeClass('template-visible');
+    }
+    else {
       existing.addClass('template-previsible');
       existing.addClass('template-visible');
-    });
-    current.removeClass('template-visible');
+      if (typeof callback == 'function')
+        callback();
+    }
+  },
+  setAvatarColors: function() {
+    var avatar = $('.avatar');
+    avatar.find('.color1').addClass('color-' + this.color1);
+    avatar.find('.color2').addClass('color-' + this.color2);
+    avatar.find('.color3').addClass('color-' + this.color3);
   }
-}
+};
 
 /* Development settings
 
@@ -26,7 +45,7 @@ env = "destroy"     // kill all test data
 
 */
 
-var env = "dev-test"
+var env = "dev-test";
 var flavors = flavors || []; // testing what variables need to be used through a cupping
 
 /* 
@@ -50,9 +69,9 @@ Tastings = new Meteor.Collection("tastings");
 
 if (Meteor.isClient) {
   
-  Template.add_data.tastings = function () {
-    return Tastings.find({}, {sort: {user : 1}})
-  }
+  Template.taste_words.tastings = function () {
+    return Tastings.find({}, {sort: {user : 1}});
+  };
 
 /*
   Template.enter_name.events({
@@ -73,14 +92,14 @@ if (Meteor.isClient) {
     }
   })
 */
-  Template.add_data.events({
+  Template.taste_words.events({
   'click input.flavor': function(e) {
     flavors.push(e.srcElement.value);
     console.log(flavors);
   },
   // let's just assume that it's going to be a complete/finalize button
   'click input.finalize': function(e) {
-      if(e.keyIdentifier == 'Enter' || e.keyIdentifier == undefined) {
+      if(e.keyIdentifier == 'Enter' || e.keyIdentifier === undefined) {
 
         Cuppings.insert({
           user: document.getElementById('user_name').value, //entered_name,
@@ -92,23 +111,35 @@ if (Meteor.isClient) {
             acidity: 1,
             body: 0
           }
-        })
+        });
 
       }
     }
-  })
+  });
 
-  Template.add_data.greeting = function () {
+  Template.taste_words.greeting = function () {
     return "All the coffee tasting!";
   };
-  Template.add_data.cuppings = function () {
-    return Cuppings.find({}, {sort: {user : 1}})
-  }
+  Template.taste_words.cuppings = function () {
+    return Cuppings.find({}, {sort: {user : 1}});
+  };
 
   Template.home.events({
     'click .btn-adddata' : function () {
-      CoffeeMoto.showTemplate('add_data');
-      // console.log(Meteor.render(Template.add_data));      
+      // randomize avatar colors
+      CoffeeMoto.color1 = Math.floor(Math.random()*7);
+      CoffeeMoto.color2 = Math.floor(Math.random()*7);
+      CoffeeMoto.color3 = Math.floor(Math.random()*7);
+      CoffeeMoto.showTemplate($('.template-visible'),'add_data',true,function() {
+
+        $('.begin').click(function() {
+          var name = $('.user_name').val();
+          CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() { 
+            $('.avatarspace .name').text(name);
+            CoffeeMoto.showTemplate($('.template-add_cupping'),'cupping',false);
+          });
+        });
+      });
     }
   });
 

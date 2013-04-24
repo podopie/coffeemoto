@@ -575,10 +575,12 @@ h6 {
   margin-bottom: 1.65em;
 }
 
-
 /* ==========================================================================
  Author's custom styles
  ========================================================================== */
+
+/*=Global
+--------------------------------------------------------------------------- */
 a {
   color: #5A2E2E;
   text-decoration: none;
@@ -598,31 +600,83 @@ nav ul {
 nav li {
   display: block;
 }
+h3 {
+  text-align: center;
+}
+input {
+  font-family: 'Open Sans','Helvetica Neue',helvetica,arial,sans-serif;
+}
 #main {
   background: #F7F6E4;
 }
+.avatar {
+  -webkit-border-radius: 5em;
+  -moz-border-radius: 5em;
+  background: #333;
+  border-radius: 5em;
+  height: 5em;
+  overflow: hidden;
+  position: relative;
+  width: 5em;
+}
+.avatar > div {
+  height: 33%;
+}
+.avatar .color3 {
+  height: 34%;
+}
+.avatar .color-0 {
+  background: #7A5B3E;
+}
+.avatar .color-1 {
+  background: #CDBDAE;
+}
+.avatar .color-2 {
+  background: #1F1F1F;
+}
+.avatar .color-3 {
+  background: #8D7966;
+}
+.avatar .color-4 {
+  background: #A8A39D;
+}
+.avatar .color-5 {
+  background: #D8C8B8;
+}
+.avatar .color-6 {
+  background: #E2DDD9;
+}
+.avatar > i {
+  color: #F7F6E4;
+  position: absolute;
+  font-size: 5em;
+  left: 0.4em;
+  top: 0.3em;
+  opacity: 0.9;
+  z-index: 10;
+}
 
+/*=Header/footer
+--------------------------------------------------------------------------- */
 header {
   background: #D4C098;
   color: #453628;
 }
 header h1 {
   font-size: 2em;
-  float: left;
   margin: 0;
   padding: 0.25em 0;
+  text-align: center;
 }
 header nav {
-  float: right;
+  text-align: center;
 }
 header nav li {
-  float: left;
+  display: inline-block;
 }
 header nav a {
-  border: 1px solid #cab180;
-  border-width: 0 0 0 1px;
   color: #453628;
-  display: block;
+  display: inline-block;
   font-weight: bold;
   line-height: 1em;
   padding: 1em;
@@ -638,31 +692,42 @@ footer p {
   border-top: 1px solid #cab180;
   padding: 1em 2em 0;
 }
-.coffee-logo {
-  text-align: center;
+@media only screen and (min-width: 42em) {
+  header h1 {
+    float: left;
+    text-align: left;
+    padding-left: 1em;
+  }
+  header nav {
+    float: right;
+  }
+  header nav li {
+    float: left;
+  }
+  header nav a {
+    border: 1px solid #cab180;
+    display: block;
+    border-width: 0 0 0 1px;
+  }
 }
-.coffee-logo .icon-coffee {
-  font-size: 16em;
-}
-.home-nav .btn {
-  display: block;
-  margin: 1em auto;
-  position: relative;
-  width: 24em;
-}
+
+/*=Template wrapper
+--------------------------------------------------------------------------- */
 .template-wrapper {
   display: none;
+  margin: 2em auto;
   opacity: 0;
-      -moz-transition: all 0.3s ease-out;
-    -ms-transition: all 0.3s ease-out;
-    -webkit-transition: all 0.3s ease-out;
-    transition: all 0.3s ease-out;
+  -moz-transition: opacity 0.3s ease-in;
+  -ms-transition: opacity 0.3s ease-in;
+  -webkit-transition: opacity 0.3s ease-in;
+  transition: opacity 0.3s ease-in;
+  padding: 0 0.5em;
 }
 .template-previsible {
   display: block;
 }
 .template-visible {
-  -webkit-animation: fadeIn 1s;
+  -webkit-animation: fadeIn 0.3s ease-in;
   opacity: 1;
 }
 @-webkit-keyframes fadeIn {
@@ -676,6 +741,82 @@ footer p {
   }
   100% {
     opacity: 1;
+  }
+}
+@media only screen and (min-width: 42em) {
+  .template-wrapper {
+    margin-bottom: 5em;
+    margin-top: 5em;
+    width: 42em;
+  }
+}
+
+/*=Home
+--------------------------------------------------------------------------- */
+.coffee-logo {
+  text-align: center;
+}
+.coffee-logo .icon-coffee {
+  font-size: 16em;
+}
+.home-nav .btn {
+  display: block;
+  margin: 1em auto;
+  position: relative;
+}
+@media only screen and (min-width: 40em) {
+  .home-nav .btn {
+    width: 24em;
+  }
+}
+
+/*=Add data
+--------------------------------------------------------------------------- */
+.template-add_data {
+  text-align: center;
+}
+.template-add_data .avatar {
+  -webkit-border-radius: 8em;
+  -moz-border-radius: 8em;
+  border-radius: 8em;
+  height: 8em;
+  margin: 0 auto;
+  width: 8em;
+}
+.template-add_data h2 {
+  text-align: center;
+}
+.template-add_data label {
+  display: block;
+  text-align: center;
+}
+.template-add_data input {
+  padding: 0.25em;
+  margin-bottom: 0.5em;
+}
+
+@media only screen and (min-width: 40em) {
+  .template-add_data {
+    text-align: left;
+  }
+  .template-add_data .avatar {
+    float: left;
+  }
+  .template-add_data .formdetail {
+    margin-left: 2em;
+    margin-top: 1em;
+    float: left;
+  }
+  .template-add_data label {
+    text-align: left;
+  }
+  .template-add_data input {
+    text-align: left;
+    width: 20em;
+  }
+
+  .template-add_data {
+    width: 34em;
   }
 }
 
