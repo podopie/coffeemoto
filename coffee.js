@@ -177,8 +177,27 @@ if (Meteor.isClient) {
               if (!$(this).hasClass('inactive')) {
 
                 // add in data logic here, the cuppings insert
+                var name = $('.name').text();
+                var cupSelected = $('.tastes').text();
+                var tastings = $('.taste.selected').map(function() { return $(this).text() })
 
-                document.location.href = '/';
+
+                Cuppings.insert({
+                  user: name, //entered_name,
+                  cup: cupSelected, //cup_int
+                  tastes: ['oranges'], //tastings, //tastes from this template
+                  impressions: { // from impressions object
+                    overall: 1,
+                    aroma: 0,
+                    acidity: 1,
+                    body: 0
+                  }
+                });
+
+                Cuppings.find().forEach(function(i) {console.log(i)})
+
+                // document.location.href = '/';
+
 
                 // CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() {
                 //   CoffeeMoto.showTemplate($('.template-add_cupping'),'cupping',false);
