@@ -88,7 +88,12 @@ if (Meteor.isClient) {
       CoffeeMoto.color2 = Math.floor(Math.random()*7);
       CoffeeMoto.color3 = Math.floor(Math.random()*7);
       CoffeeMoto.showTemplate($('.template-visible'),'add_data',true,function() {
-
+        $('.user_name').keypress(function(e) {
+          if (e.keyCode == 13) {
+            e.preventDefault();
+            $('.begin').trigger('click');
+          }
+        });
         $('.begin').click(function(e) {
           e.preventDefault();
           var name = $('.user_name').val();
@@ -101,7 +106,6 @@ if (Meteor.isClient) {
                 CoffeeMoto.showTemplate($('.template-cupping'),'impressions',true);
             });
             $('.template-add_cupping').on('click','.impressions .btn',function(e) {
-              console.log('here');
               e.preventDefault();
               var item = $(this);
               if (item.hasClass('btn-yes'))
@@ -124,7 +128,7 @@ if (Meteor.isClient) {
             });
             $('.template-add_cupping').on('click','.template-taste_words .btn',function(e) {
               e.preventDefault();
-              $(this).addClass('selected');
+              $(this).toggleClass('selected');
               $('.btn-finalize').removeClass('inactive');
             });
             $('.template-add_cupping').on('click','.btn-finalize',function(e) {
@@ -134,31 +138,31 @@ if (Meteor.isClient) {
                 var name = $('.name').text();
                 var cupSelected = $('.tastes').text().split('#')[1];
 
-                impressionSelections = []
+                impressionSelections = [];
 
                 if ($('.selected.overall').hasClass('btn-yes')) {
-                  impressionSelections.push(1)
+                  impressionSelections.push(1);
                 } else {
-                  impressionSelections.push(0)
+                  impressionSelections.push(0);
                 }
                 if ($('.selected.aroma').hasClass('btn-yes')) {
-                  impressionSelections.push(1)
+                  impressionSelections.push(1);
                 } else {
-                  impressionSelections.push(0)
+                  impressionSelections.push(0);
                 }
                 if ($('.selected.acidity').hasClass('btn-yes')) {
-                  impressionSelections.push(1)
+                  impressionSelections.push(1);
                 } else {
-                  impressionSelections.push(0)
+                  impressionSelections.push(0);
                 }
                 if ($('.selected.body').hasClass('btn-yes')) {
-                  impressionSelections.push(1)
+                  impressionSelections.push(1);
                 } else {
-                  impressionSelections.push(0)
+                  impressionSelections.push(0);
                 }
-                var selectedTastes = $('.taste.selected').map(function() { return $(this).text() })
-                var arr = []
-                selectedTastes.each(function(i) { arr.push(selectedTastes[i]) })
+                var selectedTastes = $('.taste.selected').map(function() { return $(this).text(); });
+                var arr = [];
+                selectedTastes.each(function(i) { arr.push(selectedTastes[i]); });
 
                 Cuppings.insert({
                   user: name, //entered_name,
@@ -172,14 +176,14 @@ if (Meteor.isClient) {
                   }
                 });
 
-                Cuppings.find().forEach(function(i) {console.log(i)})
+                Cuppings.find().forEach(function(i) {console.log(i); });
 
-                alert('thanks for your submission!');
-
-
-                // CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() {
-                //   CoffeeMoto.showTemplate($('.template-add_cupping'),'cupping',false);
-                // });
+                CoffeeMoto.showTemplate($('.template-add_cupping'),'thanks',true,function() {
+                  $('.template-thanks .btn').click(function(e) {
+                    e.preventDefault();
+                    document.location.href = '/';
+                  });
+                });
               }
             });
             CoffeeMoto.showTemplate($('.template-add_cupping'),'cupping',false);
