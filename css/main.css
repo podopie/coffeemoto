@@ -905,7 +905,9 @@ footer p {
   margin-top: 2em;
   width: 8em;
 }
-
+.template-thanks {
+  text-align: center;
+}
 
 /* ==========================================================================
  Helper classes
@@ -923,4 +925,16 @@ footer p {
 
 .clearfix {
   *zoom: 1;
+}
+/* ==========================================================================
+d3 stuff
+  ========================================================================== */
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.tick text {
+  font-size: 12px;
 }

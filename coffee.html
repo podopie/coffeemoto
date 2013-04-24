@@ -14,14 +14,16 @@
       <ul>
         <li><a href="#">Brew help</a></li>
         <li><a href="#">Add data</a></li>
-        <li><a href="#">Results</a></li> 
+        <li><a href="#">Results</a></li>
       </ul>
     </nav>
   </header>
+
   <div id="main">
     {{>home}}
-    
   </div>
+  <div id="chart"></div>
+
   <footer>
     <p>&copy; 2013 Ed/Nick Animoto</p>
   </footer>
@@ -60,23 +62,23 @@
 <template name="taste_words">
   <h3>What words best describe what you tasted?</h3>
   {{#each tastings}}
-  	{{> tasting}}
+    {{> tasting}}
   {{/each}}
   <p><a href="#" class="btn-finalize btn inactive">Finalize</a></p>
 </template>
 
 <template name="cupping">
-	<h3>Coffee type?</h3>
+  <h3>Coffee type?</h3>
   <div class="cuppingoptions">
-    <a href="#" class="btn">1</a>
-    <a href="#" class="btn">2</a>
-    <a href="#" class="btn">3</a>
-    <a href="#" class="btn">4</a>
     <a href="#" class="btn">5</a>
     <a href="#" class="btn">6</a>
     <a href="#" class="btn">7</a>
     <a href="#" class="btn">8</a>
-  </div> 
+    <a href="#" class="btn">9</a>
+    <a href="#" class="btn">10</a>
+    <a href="#" class="btn">11</a>
+    <a href="#" class="btn">12</a>
+  </div>
 </template>
 
 <template name="impressions">
@@ -86,22 +88,22 @@
     <a href="#" class="btn btn-yes overall"><i class="icon-thumbs-up"></i></a>
     <a href="#" class="btn btn-no overall"><i class="icon-thumbs-down"></i></a>
     <p>Did you like the taste?</p>
-    
+
     <label>Aroma?</label>
     <a href="#" class="btn btn-yes aroma"><i class="icon-thumbs-up"></i></a>
     <a href="#" class="btn btn-no aroma"><i class="icon-thumbs-down"></i></a>
     <p>Did it smell good?</p>
-    
+
     <label>Acidity?</label>
     <a href="#" class="btn btn-yes acidity"><i class="icon-thumbs-up"></i></a>
     <a href="#" class="btn btn-no acidity"><i class="icon-thumbs-down"></i></a>
     <p>Was it too bitter, or too acidic?</p>
-    
+
     <label>Body?</label>
     <a href="#" class="btn btn-yes body"><i class="icon-thumbs-up"></i></a>
     <a href="#" class="btn btn-no body"><i class="icon-thumbs-down"></i></a>
     <p>Was the flavor too weak, or just right?</p>
-    
+
     <a href="#" class="btn impressions-finalize inactive">Continue</a>
   </div>
 </template>
@@ -122,5 +124,10 @@
 </template>
 
 <template name="tasting">
-	<a href="#" class="btn taste">{{ taste }}</a>
+  <a href="#" class="btn taste">{{ taste }}</a>
+</template>
+
+<template name="thanks">
+  <h3>You're done! Thanks for the input!</h3>
+  <a href="#" class="btn alldone">Reload the app for next customer/tasting</a>
 </template>
