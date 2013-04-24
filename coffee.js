@@ -81,7 +81,31 @@ if (Meteor.isClient) {
   };
 
   Template.home.events({
-    'click .btn-adddata' : function () {
+    'click .btn-brewinfo' : function (e) {
+      e.preventDefault();
+      CoffeeMoto.showTemplate($('.template-visible'),'brewing',true,function() {
+        $('.btn-drip').one('click',function() {
+          console.log('got here');
+          CoffeeMoto.showTemplate($('.template-visible'),'brew_drip',true);
+        });
+        $('.btn-espresso').one('click',function() {
+          console.log('got here1');
+          CoffeeMoto.showTemplate($('.template-visible'),'brew_espresso',true);
+        });
+        $('.btn-steaming').one('click',function() {
+          console.log('got here2');
+          CoffeeMoto.showTemplate($('.template-visible'),'brew_steaming',true);
+        });
+
+        $('body').one('click','.back-btn',function(e) {
+          CoffeeMoto.showTemplate($('.template-visible'),'brewing',true);
+          console.log('got a click');
+        });
+
+      });
+    },
+    'click .btn-adddata' : function (e) {
+      e.preventDefault();
       // randomize avatar colors
       CoffeeMoto.color1 = Math.floor(Math.random()*7);
       CoffeeMoto.color2 = Math.floor(Math.random()*7);

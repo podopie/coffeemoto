@@ -513,7 +513,6 @@ body {
   -moz-hyphens: auto;
   -ms-hyphens: auto;
   hyphens: auto;
-  word-wrap: break-word;
   background: #F7F6E4;
   color: #333;
   font: normal 112.5%/1.5 'Open Sans','Helvetica Neue',helvetica,arial,sans-serif;
@@ -735,7 +734,7 @@ footer p {
 --------------------------------------------------------------------------- */
 .template-wrapper {
   display: none;
-  margin: 2em auto;
+  margin: 2em 0;
   opacity: 0;
   -moz-transition: opacity 0.3s ease-in;
   -ms-transition: opacity 0.3s ease-in;
@@ -763,10 +762,10 @@ footer p {
     opacity: 1;
   }
 }
-@media only screen and (min-width: 42em) {
+@media only screen and (min-width: 48em) {
   .template-wrapper {
-    margin-bottom: 2em;
-    margin-top: 2em;
+    margin: 2em auto;
+    padding: 0;
     width: 42em;
   }
 }
@@ -909,6 +908,64 @@ footer p {
   text-align: center;
 }
 
+/*=Brewing
+--------------------------------------------------------------------------- */
+.template-brewing {
+  text-align: center;
+}
+.template-brewing .btn {
+  display: block;
+  margin: 0.5em 20%;
+}
+.template-brewing .btn > i {
+  display: block;
+  font-size: 6em;
+  margin: 0.05em 0;
+}
+.template-brewing .icon-tint {
+  position: relative;
+  top: 0.1em;
+}
+.template-brewing .icon-beaker {
+  position: relative;
+  top: 0.05em;
+}
+.template-brewing .btn {
+  font-weight: bold;
+  margin-top: 0.25em;
+  text-transform: uppercase;
+}
+.template-brew_drip h2,
+.template-brew_espresso h2,
+.template-brew_steaming h2 {
+  text-align: center;
+}
+.template-brew_drip i,
+.template-brew_espresso i,
+.template-brew_steaming i {
+  display: block;
+  font-size: 4em;
+  margin: 0;
+}
+.back-btn {
+  margin: 1em auto;
+}
+.back-btn i {
+  display: inline-block;
+  font-size: 1em;
+}
+.template-brew_drip li,
+.template-brew_espresso li,
+.template-brew_steaming li {
+  margin: 1em 0;
+}
+@media only screen and (min-width: 40em) {
+  .template-brewing .btn {
+    display: inline-block;
+    margin: 0.5em 0;
+    width: 20em;
+  }
+}
 /* ==========================================================================
  Helper classes
  ========================================================================== */
