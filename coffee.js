@@ -1,3 +1,24 @@
+CoffeeMoto = {
+  showTemplate: function(templatename) {
+    var existing = $('.template-' + templatename);
+    var current = $('.template-visible');
+    if (!existing.length) {
+      var details = $(Meteor.render(Template[templatename]));
+      var wrapper = $('<div class="template-wrapper template-' + templatename + '">');
+      $('#main').append(wrapper);
+      wrapper.append(details);
+      existing = wrapper;
+    }
+    current.on('webkitTransitionEnd',function(e)
+    {
+      current.removeClass('template-previsible');
+      existing.addClass('template-previsible');
+      existing.addClass('template-visible');
+    });
+    current.removeClass('template-visible');
+  }
+}
+
 /* Development settings
 
 env = "dev-test"   // add in test data
@@ -27,21 +48,21 @@ Cuppings = new Meteor.Collection("cuppings");
 Tastings = new Meteor.Collection("tastings");
 
 if (Meteor.isClient) {
-  Template.hello.greeting = function () {
+  Template.add_data.greeting = function () {
     return "All the coffee tasting!";
   };
-  Template.hello.cuppings = function () {
+  Template.add_data.cuppings = function () {
     return Cuppings.find({}, {sort: {user : 1}})
   }
 
-  Template.hello.events({
-    'click input' : function () {
-      // template data, if any, is available in 'this'
-
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
+  Template.home.events({
+    'click .btn-adddata' : function () {
+      CoffeeMoto.showTemplate('add_data');
+      // console.log(Meteor.render(Template.add_data));      
     }
   });
+
+
 }
 
 if (Meteor.isServer) {
