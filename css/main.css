@@ -896,6 +896,7 @@ footer p {
 .template-taste_words .btn {
   margin: 0.2em;
   width: 4.5em;
+  white-space: nowrap;
 }
 .template-taste_words .btn.selected {
   background: #EE9F80;

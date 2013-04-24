@@ -147,9 +147,9 @@ if (Meteor.isClient) {
                   impressionSelections.push(0)
                 }
                 if ($('.selected.acidity').hasClass('btn-yes')) {
-                  impressionSelections.push(0)
-                } else {
                   impressionSelections.push(1)
+                } else {
+                  impressionSelections.push(0)
                 }
                 if ($('.selected.body').hasClass('btn-yes')) {
                   impressionSelections.push(1)
