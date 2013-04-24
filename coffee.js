@@ -85,10 +85,31 @@ if (Meteor.isClient) {
     Cuppings.find().forEach(function(i) {
       data.push(i);
     })
+    var tastes_corpus = [
+      'bitter', 'bland', 'briny', 'buttery', 'chocolate',
+      'complex', 'flat', 'floral', 'fruity', 'grassy',
+      'harsh', 'herbal', 'full', 'light', 'lively',
+      'mellow', 'muddy', 'pungent', 'rich', 'smooth',
+      'strong', 'sweet', 'syrupy', 'watery', 'weak'
+    ];
+    var arr = {};
+    for (taste in tastes_corpus) {
+      console.log(tastes_corpus[taste]);
+      Cuppings.find({"tastes" : tastes_corpus[taste] }).forEach(function(i) {
+        arr[tastes_corpus[taste]] = arr[tastes_corpus[taste]] || [];
+        arr[tastes_corpus[taste]].push(i.impressions.overall + i.impressions.aroma + i.impressions.acidity + i.impressions.body)
+        arr[tastes_corpus[taste]].average = 0;
+        for (i in arr[tastes_corpus[taste]]) {
+          arr[tastes_corpus[taste]].average = arr[tastes_corpus[taste]].average + arr[i]
+        }
+        arr[tastes_corpus[taste]].average = arr[tastes_corpus[taste]].average / arr[tastes_corpus[taste]].length;
+      })
+    };
     return Cuppings.find({}, {sort: {user : 1}});
   };
   Template.results.events({
   })
+
 
 
   Template.home.events({
@@ -204,7 +225,23 @@ if (Meteor.isClient) {
     },
     'click .btn-results' : function() {
       console.log('clicked');
-      CoffeeMoto.showTemplate($('.template-visible'), 'results', true);
+      CoffeeMoto.showTemplate($('.template-visible'), 'results', true,function() {
+        var compareArray = function(a, b) {
+          // Takes two arrays and compares them. Spits out a numerical value
+          // 0 means the arrays contain the same data
+          // Distance represents similarity between different users
+          var distance = 0;
+          for (i in a) {
+            if (b.indexOf(a[i]) > -1) {
+            } else {
+              distance += 1; // open to interpretation here, might diversify
+            }
+          }
+          return distance;
+        }
+        testing = compareArray(data[0].tastes, data[1].tastes)
+        console.log(testing);
+      });
     }
 
   });
