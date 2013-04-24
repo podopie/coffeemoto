@@ -7,13 +7,15 @@
 </body>
 
 <template name="taste_words">
-  <h1>Hello World!</h1>
+  <h1>Sup team!</h1>
   <input id="user_name" type="text" />
-  <input type="button" value="Add Cupping" class="finalize" />
-  <h1>Cuppings</h1>
-  {{#each cuppings}}
-  	{{> cupping}}
+  <input type="button" value="Add User" class="add"/>
+  <h1>Taste Words</h1>
+  {{#each tastings}}
+  	{{> tasting}}
   {{/each}}
+  <p><input type="button" value="Finalize!" class="finalize"></input></p>
+
 </template>
 
 <template name="cupping">
@@ -27,12 +29,9 @@
 	<div class="cupping new">
 		<p>Name<input type="text"></input></p>
 		<p>Cup<input type="text"></input></p>
-		{{#each tastings}}
-		  {{> tasting}}
-		{{/each}}
 	</div>
 </template>
 
 <template name="tasting">
-	<p>Flavors<input type="text"></input></p>
+	<p><input type="button" value="{{ taste }}" class="flavor"></input></p>
 </template>

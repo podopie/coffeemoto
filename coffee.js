@@ -6,6 +6,7 @@ env = "destroy"     // kill all test data
 */
 
 var env = "dev-test"
+var flavors = flavors || []; // testing what variables need to be used through a cupping
 
 /* 
   Server Side. Set up cuppings collection for Mongo
@@ -28,8 +29,8 @@ Tastings = new Meteor.Collection("tastings");
 
 if (Meteor.isClient) {
   
-  Template.taste_words.cuppings = function () {
-    return Cuppings.find({}, {sort: {user : 1}})
+  Template.taste_words.tastings = function () {
+    return Tastings.find({}, {sort: {user : 1}})
   }
 
 /*
@@ -53,7 +54,8 @@ if (Meteor.isClient) {
 */
   Template.taste_words.events({
   'click input.flavor': function(e) {
-
+    flavors.push(e.srcElement.value);
+    console.log(flavors);
   },
   // let's just assume that it's going to be a complete/finalize button
   'click input.finalize': function(e) {
@@ -63,7 +65,7 @@ if (Meteor.isClient) {
         Cuppings.insert({
           user: document.getElementById('user_name').value, //entered_name,
           cup: 1, //cup_int
-          tastes: ['bold'], //tastes from this template
+          tastes: flavors, //tastes from this template
           impressions: { // from impressions object
             overall: 1,
             aroma: 0,

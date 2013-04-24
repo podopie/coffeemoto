@@ -2,3 +2,6 @@
 body {
 	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
+.flavor {
+	float: left;
+}
