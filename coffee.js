@@ -71,7 +71,7 @@ Cuppings = new Meteor.Collection("cuppings");
 Tastings = new Meteor.Collection("tastings");
 
 if (Meteor.isClient) {
-  
+
   Template.taste_words.tastings = function () {
     return Tastings.find({}, {sort: {user : 1}});
   };
@@ -79,6 +79,17 @@ if (Meteor.isClient) {
   Template.taste_words.cuppings = function () {
     return Cuppings.find({}, {sort: {user : 1}});
   };
+
+  Template.results.cuppings_results = function () {
+    data = [];
+    Cuppings.find().forEach(function(i) {
+      data.push(i);
+    })
+    return Cuppings.find({}, {sort: {user : 1}});
+  };
+  Template.results.events({
+  })
+
 
   Template.home.events({
     'click .btn-adddata' : function () {
@@ -96,7 +107,7 @@ if (Meteor.isClient) {
         $('.begin').click(function(e) {
           e.preventDefault();
           var name = $('.user_name').val();
-          CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() { 
+          CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() {
             $('.avatarspace .name').text(name);
             $('.template-add_cupping').on('click','.cuppingoptions .btn',function(e) {
                 console.log('got here');
@@ -190,7 +201,12 @@ if (Meteor.isClient) {
           });
         });
       });
+    },
+    'click .btn-results' : function() {
+      console.log('clicked');
+      CoffeeMoto.showTemplate($('.template-visible'), 'results', true);
     }
+
   });
 
 }

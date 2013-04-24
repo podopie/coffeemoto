@@ -1,0 +1,14 @@
+<template name="results">
+  <h1>Cuppings</h1>
+  {{#each cuppings_results}}
+    {{> cuppings_result}}
+  {{/each}}
+</template>
+
+<template name="cuppings_result">
+  <p><strong>{{_id}}</strong></p>
+  <p>Body: {{impressions.body}}</p>
+  <p>Tastings: {{#each tastes}}
+    {{this}}
+  {{/each}}</p>
+</template>
