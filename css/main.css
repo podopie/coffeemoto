@@ -905,7 +905,9 @@ footer p {
   margin-top: 2em;
   width: 8em;
 }
-
+.template-thanks {
+  text-align: center;
+}
 
 /* ==========================================================================
  Helper classes
