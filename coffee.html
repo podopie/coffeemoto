@@ -3,13 +3,13 @@
 </head>
 
 <body>
-  {{> hello}}
+  {{> taste_words}}
 </body>
 
-<template name="hello">
+<template name="taste_words">
   <h1>Hello World!</h1>
-  {{greeting}}
-  <input type="button" value="Add Cupping" />
+  <input id="user_name" type="text" />
+  <input type="button" value="Add Cupping" class="finalize" />
   <h1>Cuppings</h1>
   {{#each cuppings}}
   	{{> cupping}}

@@ -27,29 +27,67 @@ Cuppings = new Meteor.Collection("cuppings");
 Tastings = new Meteor.Collection("tastings");
 
 if (Meteor.isClient) {
-  Template.hello.greeting = function () {
-    return "All the coffee tasting!";
-  };
-  Template.hello.cuppings = function () {
+  
+  Template.taste_words.cuppings = function () {
     return Cuppings.find({}, {sort: {user : 1}})
   }
 
-  Template.hello.events({
-    'click input' : function () {
-      // template data, if any, is available in 'this'
-
-      if (typeof console !== 'undefined')
-        console.log("You pressed the button");
+/*
+  Template.enter_name.events({
+    'click input.add':function(e) {
+      if(e.keyIdentifier == 'Enter' || e.keyIdentifier == undefined) {
+        var entered_name = document.getElementById('user_name').value;
+      }
     }
-  });
-}
+  })
+  Template.coffee_type.events({
 
+  })
+  Template.impressions.events({
+    'click input.impression': function(e) {
+      var impressions = impressions || [];
+      var key = e.getAttribute("data-type");
+      var value = document.getElementById('')
+    }
+  })
+*/
+  Template.taste_words.events({
+  'click input.flavor': function(e) {
+
+  },
+  // let's just assume that it's going to be a complete/finalize button
+  'click input.finalize': function(e) {
+      if(e.keyIdentifier == 'Enter' || e.keyIdentifier == undefined) {
+        
+
+        Cuppings.insert({
+          user: document.getElementById('user_name').value, //entered_name,
+          cup: 1, //cup_int
+          tastes: ['bold'], //tastes from this template
+          impressions: { // from impressions object
+            overall: 1,
+            aroma: 0,
+            acidity: 1,
+            body: 0
+          }
+        })
+
+      }
+    }
+  })
+}
 if (Meteor.isServer) {
   // Run on startup
   // For now, just generate a few users in the doc
   // Also we fill in some tastings at random
   Meteor.startup(function () {
-    var tastes_corpus = ['bold', 'spice', 'fruit', 'acidic', 'bitter', 'flowers', 'bold', 'tea', 'chocolate', 'just coffee'];
+    var tastes_corpus = [
+      'bitter', 'bland', 'briny', 'buttery', 'chocolate',
+      'complex', 'flat', 'floral', 'fruity', 'grassy',
+      'harsh', 'herbal', 'full', 'light', 'lively',
+      'mellow', 'muddy', 'pungent', 'rich', 'smooth',
+      'strong', 'sweet', 'syrupy', 'watery', 'weak'
+    ];
     if (Tastings.find().count() === 0) {
       for (var i = 0; i < tastes_corpus.length; i++) {
         Tastings.insert({
@@ -72,6 +110,9 @@ if (Meteor.isServer) {
     } else if (env == "destroy") {
       Cuppings.find().forEach(function(cupping) {
         Cuppings.remove(cupping._id)
+      })
+      Tastings.find().forEach(function(tasting) {
+        Tastings.remove(tasting._id)
       })
     }
   });
