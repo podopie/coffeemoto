@@ -7,7 +7,10 @@ CoffeeMoto = {
     if (!existing.length) {
       var details = $(Meteor.render(Template[templatename]));
       var wrapper = $('<div class="template-wrapper template-' + templatename + '">');
-      current.parent().append(wrapper);
+      if (hidecurrent)
+        current.parent().append(wrapper);
+      else
+        current.append(wrapper);
       wrapper.append(details);
       existing = wrapper;
     }
@@ -132,10 +135,56 @@ if (Meteor.isClient) {
       CoffeeMoto.color3 = Math.floor(Math.random()*7);
       CoffeeMoto.showTemplate($('.template-visible'),'add_data',true,function() {
 
-        $('.begin').click(function() {
+        $('.begin').click(function(e) {
+          e.preventDefault();
           var name = $('.user_name').val();
           CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() { 
             $('.avatarspace .name').text(name);
+            $('.template-add_cupping').on('click','.cuppingoptions .btn',function(e) {
+                console.log('got here');
+                e.preventDefault();
+                $('.avatarspace .tastes').text('Coffee #' + $(this).text().trim());
+                CoffeeMoto.showTemplate($('.template-cupping'),'impressions',true);
+            });
+            $('.template-add_cupping').on('click','.impressions .btn',function(e) {
+              console.log('here');
+              e.preventDefault();
+              var item = $(this);
+              if (item.hasClass('btn-yes'))
+                item.next().removeClass('selected');
+              else
+                item.prev().removeClass('selected');
+              item.addClass('selected');
+              // check to see if we've checked everything
+              var buttons = $('.btn').filter('.selected');
+              if (buttons.filter('.overall').length && buttons.filter('.aroma').length && buttons.filter('.acidity').length && buttons.filter('.body').length) {
+                $('.impressions-finalize').removeClass('inactive');
+              }
+              else
+                $('.impressions-finalize').addClass('inactive');
+            });
+            $('.template-add_cupping').on('click','.impressions-finalize',function(e) {
+              if (!$(this).hasClass('inactive')) {
+                CoffeeMoto.showTemplate($('.template-impressions'),'taste_words',true);
+              }
+            });
+            $('.template-add_cupping').on('click','.template-taste_words .btn',function(e) {
+              e.preventDefault();
+              $(this).addClass('selected');
+              $('.btn-finalize').removeClass('inactive');
+            });
+            $('.template-add_cupping').on('click','.btn-finalize',function(e) {
+              if (!$(this).hasClass('inactive')) {
+
+                // add in data logic here, the cuppings insert
+
+                document.location.href = '/';
+
+                // CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() {
+                //   CoffeeMoto.showTemplate($('.template-add_cupping'),'cupping',false);
+                // });
+              }
+            });
             CoffeeMoto.showTemplate($('.template-add_cupping'),'cupping',false);
           });
         });

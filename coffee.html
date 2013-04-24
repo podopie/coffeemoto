@@ -9,7 +9,7 @@
 
 <body>
   <header class="clearfix">
-    <h1>CoffeeMoto</h1>
+    <h1><a href="/">CoffeeMoto</a></h1>
     <nav>
       <ul>
         <li><a href="#">Brew help</a></li>
@@ -58,10 +58,11 @@
 </template>
 
 <template name="taste_words">
+  <h3>What words best describe what you tasted?</h3>
   {{#each tastings}}
   	{{> tasting}}
   {{/each}}
-  <p><a href="#" value="Finalize!" class="finalize btn">Finalize</a></p>
+  <p><a href="#" class="btn-finalize btn inactive">Finalize</a></p>
 </template>
 
 <template name="cupping">
@@ -100,11 +101,13 @@
     <a href="#" class="btn btn-yes body"><i class="icon-thumbs-up"></i></a>
     <a href="#" class="btn btn-no body"><i class="icon-thumbs-down"></i></a>
     <p>Was the flavor too heavy on the touge, too weak, or just right?</p>
+    
+    <a href="#" class="btn impressions-finalize inactive">Continue</a>
   </div>
 </template>
 
 <template name="add_cupping">
-  <div class="avatarspace">
+  <div class="avatarspace clearfix">
     <div class="avatar">
       <i class="icon-user"></i>
       <div class="color1"></div>
@@ -119,5 +122,5 @@
 </template>
 
 <template name="tasting">
-	<p><input type="button" value="{{ taste }}" class="flavor"></input></p>
+	<a href="#" class="btn">{{ taste }}</a>
 </template>

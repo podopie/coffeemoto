@@ -592,6 +592,20 @@ a {
   display: inline-block;
   padding: 0.25em 2em;
   text-align: center;
+  -moz-transition: background 0.2s ease-in;
+  -ms-transition: background 0.2s ease-in;
+  -webkit-transition: background 0.2s ease-in;
+  transition: background 0.2s ease-in;
+}
+.btn:hover {
+  background: #c5aa74;
+}
+.btn.inactive {
+  cursor: pointer;
+  opacity: 0.6;
+}
+.btn.inactive:hover {
+  background: #D4C098;
 }
 nav ul {
   margin: 0;
@@ -667,6 +681,12 @@ header h1 {
   margin: 0;
   padding: 0.25em 0;
   text-align: center;
+}
+header h1 a {
+  color: #453628;
+}
+header h1 a:hover {
+  color: #2f251c;
 }
 header nav {
   text-align: center;
@@ -745,8 +765,8 @@ footer p {
 }
 @media only screen and (min-width: 42em) {
   .template-wrapper {
-    margin-bottom: 5em;
-    margin-top: 5em;
+    margin-bottom: 2em;
+    margin-top: 2em;
     width: 42em;
   }
 }
@@ -818,6 +838,71 @@ footer p {
   .template-add_data {
     width: 34em;
   }
+}
+
+/*=add cupping
+--------------------------------------------------------------------------- */
+.avatarspace .avatar,
+.avatarspace .formdetail {
+  float: left;
+}
+.avatarspace .avatar > i {
+  font-size: 3em;
+}
+.avatarspace .formdetail {
+  margin-left: 1em;
+}
+.avatarspace p {
+  line-height: 1;
+  margin: 0.5em 0;
+}
+.avatarspace .name {
+  font-weight: bold;
+}
+
+/*=Impressions
+--------------------------------------------------------------------------- */
+.impressions {
+  text-align: center;
+}
+.impressions label {
+  clear: both;
+  display: block;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.5em;
+  margin-top: 1.5em;
+}
+.impressions .btn-yes.selected {
+  background: #02907D;
+}
+.impressions .btn-no.selected {
+  background: #EE9F80;
+}
+.impressions p {
+  font-size: 0.75em;
+  font-style: italic;
+  margin: 0.5em 0;
+}
+.impressions-finalize {
+  margin-top: 2em;
+}
+
+/*=Taste words
+--------------------------------------------------------------------------- */
+.template-taste_words {
+  text-align: center;
+}
+.template-taste_words .btn {
+  margin: 0.2em;
+  width: 4.5em;
+}
+.template-taste_words .btn.selected {
+  background: #EE9F80;
+}
+.template-taste_words .btn-finalize {
+  margin-top: 2em;
+  width: 8em;
 }
 
 
