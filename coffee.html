@@ -1,23 +1,56 @@
 <head>
-  <title>coffee</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CoffeeMoto</title>
+  <meta name="description" content="CoffeeMoto: The best coffee, at Animoto HQ.">
+  <meta name="viewport" content="width=device-width">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
-  {{> taste_words}}
+  <header class="clearfix">
+    <h1>CoffeeMoto</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Brew help</a></li>
+        <li><a href="#">Add data</a></li>
+        <li><a href="#">Results</a></li> 
+      </ul>
+    </nav>
+  </header>
+  <div id="main">
+    {{>home}}
+    
+  </div>
+  <footer>
+    <p>&copy; 2013 Ed/Nick Animoto</p>
+  </footer>
 </body>
 
-<template name="taste_words">
-  <h1>Sup team!</h1>
-  <input id="user_name" type="text" />
-  <input type="button" value="Add User" class="add"/>
-  <h1>Taste Words</h1>
+<template name="home">
+  <div class="template-wrapper template-home template-previsible template-visible">
+    <div class="coffee-logo row"><i class="icon-coffee"></i></div>
+    <nav class="home-nav">
+      <ul>
+        <li><a class="btn btn-brewinfo" href="#">Brewing</a></li>
+        <li><a class="btn btn-adddata" href="#">Add data</a></li>
+        <li><a class="btn btn-results" href="#">Results</a></li>
+      </ul>
+    </nav>
+  </div>
+</template>
+
+<template name="add_data">
+  <h1>Generate New Tasting</h1>
+  <p><label>Some guys name:<input type="text"></input></label></p>
   {{#each tastings}}
   	{{> tasting}}
   {{/each}}
   <p><input type="button" value="Finalize!" class="finalize"></input></p>
 
 </template>
-
+<template name="taste_words">
+</template>
 <template name="cupping">
 	<div class="cupping {{selected}}">
 		<p><strong><span class="name">{{user}}</span></strong><br/>

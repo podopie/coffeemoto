@@ -1,3 +1,24 @@
+CoffeeMoto = {
+  showTemplate: function(templatename) {
+    var existing = $('.template-' + templatename);
+    var current = $('.template-visible');
+    if (!existing.length) {
+      var details = $(Meteor.render(Template[templatename]));
+      var wrapper = $('<div class="template-wrapper template-' + templatename + '">');
+      $('#main').append(wrapper);
+      wrapper.append(details);
+      existing = wrapper;
+    }
+    current.on('webkitTransitionEnd',function(e)
+    {
+      current.removeClass('template-previsible');
+      existing.addClass('template-previsible');
+      existing.addClass('template-visible');
+    });
+    current.removeClass('template-visible');
+  }
+}
+
 /* Development settings
 
 env = "dev-test"   // add in test data
@@ -29,7 +50,7 @@ Tastings = new Meteor.Collection("tastings");
 
 if (Meteor.isClient) {
   
-  Template.taste_words.tastings = function () {
+  Template.add_data.tastings = function () {
     return Tastings.find({}, {sort: {user : 1}})
   }
 
@@ -52,7 +73,7 @@ if (Meteor.isClient) {
     }
   })
 */
-  Template.taste_words.events({
+  Template.add_data.events({
   'click input.flavor': function(e) {
     flavors.push(e.srcElement.value);
     console.log(flavors);
@@ -60,7 +81,6 @@ if (Meteor.isClient) {
   // let's just assume that it's going to be a complete/finalize button
   'click input.finalize': function(e) {
       if(e.keyIdentifier == 'Enter' || e.keyIdentifier == undefined) {
-        
 
         Cuppings.insert({
           user: document.getElementById('user_name').value, //entered_name,
@@ -77,7 +97,23 @@ if (Meteor.isClient) {
       }
     }
   })
+
+  Template.add_data.greeting = function () {
+    return "All the coffee tasting!";
+  };
+  Template.add_data.cuppings = function () {
+    return Cuppings.find({}, {sort: {user : 1}})
+  }
+
+  Template.home.events({
+    'click .btn-adddata' : function () {
+      CoffeeMoto.showTemplate('add_data');
+      // console.log(Meteor.render(Template.add_data));      
+    }
+  });
+
 }
+
 if (Meteor.isServer) {
   // Run on startup
   // For now, just generate a few users in the doc
