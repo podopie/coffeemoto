@@ -95,14 +95,10 @@ if (Meteor.isClient) {
         sortable.push([word, tf_idf[word]])
         sortable.sort(function(a, b) {return a[1] - b[1]})
       }
-      uniques = [];
-      for (i in sortable) {
-        if (sortable[i][1] > 6) {uniques.push(sortable[i][0])}
-      }
       unique_limit = []
-      unique_limit.push(uniques[uniques.length - 1])
-      unique_limit.push(uniques[uniques.length - 2])
-      unique_limit.push(uniques[uniques.length - 3])
+      unique_limit.push(sortable[sortable.length - 1][0])
+      unique_limit.push(sortable[sortable.length - 2][0])
+      unique_limit.push(sortable[sortable.length - 3][0])
       return unique_limit;
     },
     cup_2_array: function() {
@@ -120,14 +116,10 @@ if (Meteor.isClient) {
         sortable.push([word, tf_idf[word]])
         sortable.sort(function(a, b) {return a[1] - b[1]})
       }
-      uniques = [];
-      for (i in sortable) {
-        if (sortable[i][1] > 6) {uniques.push(sortable[i][0])}
-      }
       unique_limit = []
-      unique_limit.push(uniques[uniques.length - 1])
-      unique_limit.push(uniques[uniques.length - 2])
-      unique_limit.push(uniques[uniques.length - 3])
+      unique_limit.push(sortable[sortable.length - 1][0])
+      unique_limit.push(sortable[sortable.length - 2][0])
+      unique_limit.push(sortable[sortable.length - 3][0])
       return unique_limit;
     },
     cup_3_array: function() {
@@ -144,14 +136,10 @@ if (Meteor.isClient) {
         sortable.push([word, tf_idf[word]])
         sortable.sort(function(a, b) {return a[1] - b[1]})
       }
-      uniques = [];
-      for (i in sortable) {
-        if (sortable[i][1] > 6) {uniques.push(sortable[i][0])}
-      }
       unique_limit = []
-      unique_limit.push(uniques[uniques.length - 1])
-      unique_limit.push(uniques[uniques.length - 2])
-      unique_limit.push(uniques[uniques.length - 3])
+      unique_limit.push(sortable[sortable.length - 1][0])
+      unique_limit.push(sortable[sortable.length - 2][0])
+      unique_limit.push(sortable[sortable.length - 3][0])
       return unique_limit;
     },
     cup_4_array: function() {
@@ -169,14 +157,10 @@ if (Meteor.isClient) {
         sortable.push([word, tf_idf[word]])
         sortable.sort(function(a, b) {return a[1] - b[1]})
       }
-      uniques = [];
-      for (i in sortable) {
-        if (sortable[i][1] > 6) {uniques.push(sortable[i][0])}
-      }
       unique_limit = []
-      unique_limit.push(uniques[uniques.length - 1])
-      unique_limit.push(uniques[uniques.length - 2])
-      unique_limit.push(uniques[uniques.length - 3])
+      unique_limit.push(sortable[sortable.length - 1][0])
+      unique_limit.push(sortable[sortable.length - 2][0])
+      unique_limit.push(sortable[sortable.length - 3][0])
       return unique_limit;
     }
   })
