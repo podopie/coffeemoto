@@ -779,7 +779,7 @@ footer p {
   text-align: center;
 }
 .coffee-logo .icon-coffee {
-  font-size: 16em;
+  font-size: 10em;
 }
 .home-nav .btn {
   display: block;
@@ -787,6 +787,9 @@ footer p {
   position: relative;
 }
 @media only screen and (min-width: 40em) {
+  .coffee-logo .icon-coffee {
+    font-size: 16em;
+  }
   .home-nav .btn {
     width: 24em;
   }
@@ -969,6 +972,21 @@ footer p {
     width: 20em;
   }
 }
+
+/*=Results
+--------------------------------------------------------------------------- */
+.template-results h3 {
+  margin-bottom: 0.4em;
+}
+.template-results h5 {
+  font-size: 1.4em;
+  margin-bottom: 0;
+  text-transform: none;
+}
+.template-results p {
+  margin: 0.25em 0 3em;
+}
+
 /* ==========================================================================
  Helper classes
  ========================================================================== */
@@ -996,5 +1014,17 @@ d3 stuff
   shape-rendering: crispEdges;
 }
 .tick text {
-  font-size: 12px;
+  display: none;
+}
+@media only screen and (min-width: 50em) {
+  .tick text {
+    display: block;
+    font-size: 0.5em; 
+  }
+}
+@media only screen and (min-width: 65em) {
+  .tick text {
+    display: block;
+    font-size: 0.6666667em;
+  }
 }

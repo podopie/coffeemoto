@@ -265,7 +265,7 @@ if (Meteor.isClient) {
         layers = stack(datum);
 
     var margin = {top: 40, right: 10, bottom: 20, left: 10},
-        width = 1440 - margin.left - margin.right,
+        width = $(window).width() - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
