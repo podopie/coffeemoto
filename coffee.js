@@ -49,7 +49,6 @@ env = "destroy"     // kill all test data
 
 */
 
-var env = "dev-test";
 var flavors = flavors || []; // testing what variables need to be used through a cupping
 
 /* 
@@ -72,7 +71,7 @@ Cuppings = new Meteor.Collection("cuppings");
 Tastings = new Meteor.Collection("tastings");
 
 if (Meteor.isClient) {
-  
+
   Template.taste_words.tastings = function () {
     return Tastings.find({}, {sort: {user : 1}});
   };
@@ -80,6 +79,246 @@ if (Meteor.isClient) {
   Template.taste_words.cuppings = function () {
     return Cuppings.find({}, {sort: {user : 1}});
   };
+  Template.results.helpers({
+    cup_1_array: function() {
+      var tf_idf = {};
+      tf_idf = {};
+      Tastings.find().forEach(function(i) {
+        total = Cuppings.find().count();
+        t = Cuppings.find({'cup' : {$in : ['1', '5', '9']}, 'tastes' : i.taste}).count();
+        d = Cuppings.find({'tastes' : i.taste}).count() + 1;
+        idf = Math.log(total/d);
+        tf_idf[i.taste] = idf * t;
+      })
+      var sortable = [];
+      for (var word in tf_idf) {
+        sortable.push([word, tf_idf[word]])
+        sortable.sort(function(a, b) {return a[1] - b[1]})
+      }
+      unique_limit = []
+      unique_limit.push(sortable[sortable.length - 1][0])
+      unique_limit.push(sortable[sortable.length - 2][0])
+      unique_limit.push(sortable[sortable.length - 3][0])
+      return unique_limit;
+    },
+    cup_2_array: function() {
+      var tf_idf = {};
+      tf_idf = {};
+      Tastings.find().forEach(function(i) {
+        total = Cuppings.find().count();
+        t = Cuppings.find({'cup' : {$in : ['2', '6', '10']}, 'tastes' : i.taste}).count();
+        d = Cuppings.find({'tastes' : i.taste}).count() + 1;
+        idf = Math.log(total/d);
+        tf_idf[i.taste] = idf * t;
+      })
+      var sortable = [];
+      for (var word in tf_idf) {
+        sortable.push([word, tf_idf[word]])
+        sortable.sort(function(a, b) {return a[1] - b[1]})
+      }
+      unique_limit = []
+      unique_limit.push(sortable[sortable.length - 1][0])
+      unique_limit.push(sortable[sortable.length - 2][0])
+      unique_limit.push(sortable[sortable.length - 3][0])
+      unique_limit.push(sortable[sortable.length - 4][0])
+      return unique_limit;
+    },
+    cup_3_array: function() {
+      var tf_idf = {};
+      Tastings.find().forEach(function(i) {
+        total = Cuppings.find().count();
+        t = Cuppings.find({'cup' : {$in : ['3', '7', '11']}, 'tastes' : i.taste}).count();
+        d = Cuppings.find({'tastes' : i.taste}).count() + 1;
+        idf = Math.log(total/d);
+        tf_idf[i.taste] = idf * t;
+      })
+      var sortable = [];
+      for (var word in tf_idf) {
+        sortable.push([word, tf_idf[word]])
+        sortable.sort(function(a, b) {return a[1] - b[1]})
+      }
+      unique_limit = []
+      unique_limit.push(sortable[sortable.length - 1][0])
+      unique_limit.push(sortable[sortable.length - 2][0])
+      unique_limit.push(sortable[sortable.length - 3][0])
+      unique_limit.push(sortable[sortable.length - 4][0])
+      return unique_limit;
+    },
+    cup_4_array: function() {
+      var tf_idf = {};
+      tf_idf = {};
+      Tastings.find().forEach(function(i) {
+        total = Cuppings.find().count();
+        t = Cuppings.find({'cup' : {$in : ['4', '8', '12']}, 'tastes' : i.taste}).count();
+        d = Cuppings.find({'tastes' : i.taste}).count() + 1;
+        idf = Math.log(total/d);
+        tf_idf[i.taste] = idf * t;
+      })
+      var sortable = [];
+      for (var word in tf_idf) {
+        sortable.push([word, tf_idf[word]])
+        sortable.sort(function(a, b) {return a[1] - b[1]})
+      }
+      unique_limit = []
+      unique_limit.push(sortable[sortable.length - 1][0])
+      unique_limit.push(sortable[sortable.length - 2][0])
+      unique_limit.push(sortable[sortable.length - 3][0])
+      unique_limit.push(sortable[sortable.length - 4][0])
+      return unique_limit;
+    }
+  })
+
+  Template.results.rendered = function() {
+    var arr = {};
+    Tastings.find().forEach(function(i) {
+      arr[i.taste] = {};
+      arr[i.taste]['overall'] = [];
+      arr[i.taste]['aroma'] = [];
+      arr[i.taste]['acidity'] = [];
+      arr[i.taste]['body'] = [];
+      Cuppings.find({"tastes" : i.taste }).forEach(function(j) {
+
+        arr[i.taste]['overall'].push(j.impressions.overall);
+        arr[i.taste]['overall'].average = 0;
+
+        arr[i.taste]['aroma'].push(j.impressions.aroma)
+        arr[i.taste]['aroma'].average = 0;
+
+        arr[i.taste]['acidity'].push(j.impressions.acidity)
+        arr[i.taste]['acidity'].average = 0;
+
+        arr[i.taste]['body'].push(j.impressions.body)
+        arr[i.taste]['body'].average = 0;
+
+      })
+
+      for (j in arr[i.taste]['overall']) {
+        arr[i.taste]['overall'].average = arr[i.taste]['overall'].average + arr[i.taste]['overall'][j]
+      }
+      for (j in arr[i.taste]['aroma']) {
+        arr[i.taste]['aroma'].average = arr[i.taste]['aroma'].average + arr[i.taste]['aroma'][j]
+      }
+      for (j in arr[i.taste]['acidity']) {
+        arr[i.taste]['acidity'].average = arr[i.taste]['acidity'].average + arr[i.taste]['acidity'][j]
+      }
+      for (j in arr[i.taste]['body']) {
+        arr[i.taste]['body'].average = arr[i.taste]['body'].average + arr[i.taste]['body'][j]
+      }
+      arr[i.taste]['overall'].average = arr[i.taste]['overall'].average / arr[i.taste]['overall'].length / 2;
+      arr[i.taste]['aroma'].average = arr[i.taste]['aroma'].average / arr[i.taste]['aroma'].length / 2;
+      arr[i.taste]['acidity'].average = arr[i.taste]['acidity'].average / arr[i.taste]['acidity'].length / 2;
+      arr[i.taste]['body'].average = arr[i.taste]['body'].average / arr[i.taste]['body'].length / 2;
+    });
+    var datum = []
+
+    datum[0] = {}
+    datum[0].name = "overall"
+    datum[0].values = []
+
+    datum[1] = {}
+    datum[1].name = "aroma"
+    datum[1].values = []
+
+    datum[2] = {}
+    datum[2].name = "acidity"
+    datum[2].values = []
+
+    datum[3] = {}
+    datum[3].name = "body"
+    datum[3].values = []
+
+    var count = 0;
+    for (i in arr) {
+      count += 1;
+      datum[0].values[count] = {
+      x : i, y : arr[i].overall.average
+      }
+    }
+    var count = 0;
+    for (i in arr) {
+      count += 1;
+      datum[1].values[count] = {
+      x : i, y : arr[i].aroma.average
+      }
+    }
+    var count = 0;
+    for (i in arr) {
+      count += 1;
+      datum[2].values[count] = {
+      x : i, y : arr[i].acidity.average
+      }
+    }
+    var count = 0;
+    for (i in arr) {
+      count += 1;
+      datum[3].values[count] = {
+      x : i, y : arr[i].body.average
+      }
+    }
+
+    datum[0].values.shift();
+    datum[1].values.shift();
+    datum[2].values.shift();
+    datum[3].values.shift();
+    var stack = d3.layout.stack()
+        .values(function(d) { return d.values});
+        layers = stack(datum);
+
+    var margin = {top: 40, right: 10, bottom: 20, left: 10},
+        width = 1440 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+    var x = d3.scale.ordinal()
+        .domain([
+          'bitter', 'bland', 'briny', 'buttery', 'chocolate',
+          'complex', 'flat', 'floral', 'fruity', 'grassy',
+          'harsh', 'herbal', 'full', 'light', 'lively',
+          'mellow', 'muddy', 'pungent', 'rich', 'smooth',
+          'strong', 'sweet', 'syrupy', 'watery', 'weak'])
+        .rangeRoundBands([0, width], .01);
+
+    var y = d3.scale.linear()
+        .domain([0, 4])
+        .range([height, 0]);
+
+    var color = d3.scale.linear()
+        .domain([0, 4])
+        .range(["#351E10", "#7B7B72"]);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .tickSize(0)
+        .tickPadding(6)
+        .orient("bottom");
+
+    var svg = d3.select("#chart").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var layer = svg.selectAll(".layer")
+        .data(layers)
+        .enter().append("g")
+        .attr("class", "layer")
+        .style("fill", function(d, i) { return color(i); });
+
+    var rect = layer.selectAll("rect")
+        .data(function(d) { return d.values; })
+        .enter().append("rect")
+        .attr("x", function(d) { return x(d.x); })
+        .attr("y", function(d) { return y(d.y0 + d.y); })
+        .attr("width", x.rangeBand())
+        .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y);} )
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+  }
+
+  Template.results.events({
+  })
 
   Template.home.events({
     'click .btn-adddata' : function () {
@@ -97,7 +336,7 @@ if (Meteor.isClient) {
         $('.begin').click(function(e) {
           e.preventDefault();
           var name = $('.user_name').val();
-          CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() { 
+          CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() {
             $('.avatarspace .name').text(name);
             $('.template-add_cupping').on('click','.cuppingoptions .btn',function(e) {
                 console.log('got here');
@@ -191,7 +430,13 @@ if (Meteor.isClient) {
           });
         });
       });
+    },
+    'click .btn-results' : function() {
+      console.log('clicked');
+      CoffeeMoto.showTemplate($('.template-visible'), 'results', true,function() {
+      });
     }
+
   });
 
 }
@@ -215,25 +460,5 @@ if (Meteor.isServer) {
         });
       }
     }
-/*    if (env == "dev-test" && Cuppings.find().count() === 0) {
-      var users = ["Aggie Add",
-                  "Blockey Block",
-                  "Christopher Cares",
-                  "Dangerous Dubs"];
-      for (var i = 0; i < users.length; i++) {
-        Cuppings.insert({
-          user: users[i],
-          cup: 1,
-          tastes: [tastes_corpus[i + 1], tastes_corpus[i + 3]]
-        });
-      }
-    } else if (env == "destroy") {
-      Cuppings.find().forEach(function(cupping) {
-        Cuppings.remove(cupping._id)
-      })
-      Tastings.find().forEach(function(tasting) {
-        Tastings.remove(tasting._id)
-      })
-    }*/
   });
 }
