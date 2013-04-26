@@ -265,19 +265,19 @@ if (Meteor.isClient) {
 
     var margin = {top: 40, right: 10, bottom: 20, left: 10},
         width = 1440 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        height = 400 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
         .domain(d3.range(26))
         .rangeRoundBands([0, width], .01);
 
     var y = d3.scale.linear()
-        .domain([0, 5])
+        .domain([0, 4])
         .range([height, 0]);
 
     var color = d3.scale.linear()
         .domain([0, 4])
-        .range(["#aad", "#556"]);
+        .range(["#351E10", "#7B7B72"]);
 
     var xAxis = d3.svg.axis()
         .scale(x)
