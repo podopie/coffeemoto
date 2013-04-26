@@ -1,4 +1,5 @@
-
+// Coffeemoto functions. Mostly visual functions for making it easier to set up
+// the way we wanted to the app presented.
 CoffeeMoto = {
   color1: '',
   color2: '',
@@ -39,39 +40,45 @@ CoffeeMoto = {
     avatar.find('.color1').addClass('color-' + this.color1);
     avatar.find('.color2').addClass('color-' + this.color2);
     avatar.find('.color3').addClass('color-' + this.color3);
+  },
+  generateUniques: function(cupping_array) {
+    var tf_idf = {};
+    Tastings.find().forEach(function(i) {
+      total = Cuppings.find().count();
+      t = Cuppings.find({'cup' : {$in : cupping_array}, 'tastes' : i.taste}).count();
+      d = Cuppings.find({'tastes' : i.taste}).count() + 1;
+      idf = Math.log(total/d);
+      tf_idf[i.taste] = idf * t;
+    })
+    var sortable = [];
+    for (var word in tf_idf) {
+      sortable.push([word, tf_idf[word]]);
+      sortable.sort(function(a, b) {return a[1] - b[1]});
+    }
+    unique_limit = []
+    unique_limit.push(sortable[sortable.length - 1][0])
+    unique_limit.push(sortable[sortable.length - 2][0])
+    unique_limit.push(sortable[sortable.length - 3][0])
+    return unique_limit;
   }
 };
 
-/* Development settings
-
-env = "dev-test"   // add in test data
-env = "destroy"     // kill all test data
-
-*/
-
-var flavors = flavors || []; // testing what variables need to be used through a cupping
-
-/* 
-  Server Side. Set up cuppings collection for Mongo
+/* Server Side. Set up cuppings collection for Mongo
 
   cuppings structure
-
-  _id     : cupping doc id
-  ISOdate : yup
-  user    : email address of who recorded their coffee tasting
-  cup     : cup value, just a number (1, 2, 3, 4)
-  taste   : array of tastes they selected for this cup. Let's
-            limit the number of tastes to five at max.
-  prep    : how that cup was prepped: espresso, pourover, aeropress
+  _id            : cupping doc id
+  ISOdate       : yup
+  user          : email address of who recorded their coffee tasting
+  cup           : cup value, just a number (1, 2, 3, 4)
+  impressions   : object, 0 or 1 for each "impression" ta
+  taste         : array of tastes they selected for this cup.
 
 */
-
 
 Cuppings = new Meteor.Collection("cuppings");
 Tastings = new Meteor.Collection("tastings");
 
 if (Meteor.isClient) {
-
   Template.taste_words.tastings = function () {
     return Tastings.find({}, {sort: {user : 1}});
   };
@@ -79,189 +86,82 @@ if (Meteor.isClient) {
   Template.taste_words.cuppings = function () {
     return Cuppings.find({}, {sort: {user : 1}});
   };
+
   Template.results.helpers({
     cup_1_array: function() {
-      var tf_idf = {};
-      tf_idf = {};
-      Tastings.find().forEach(function(i) {
-        total = Cuppings.find().count();
-        t = Cuppings.find({'cup' : {$in : ['1', '5', '9']}, 'tastes' : i.taste}).count();
-        d = Cuppings.find({'tastes' : i.taste}).count() + 1;
-        idf = Math.log(total/d);
-        tf_idf[i.taste] = idf * t;
-      })
-      var sortable = [];
-      for (var word in tf_idf) {
-        sortable.push([word, tf_idf[word]])
-        sortable.sort(function(a, b) {return a[1] - b[1]})
-      }
-      unique_limit = []
-      unique_limit.push(sortable[sortable.length - 1][0])
-      unique_limit.push(sortable[sortable.length - 2][0])
-      unique_limit.push(sortable[sortable.length - 3][0])
-      return unique_limit;
+      return CoffeeMoto.generateUniques(['1', '5', '9']);
     },
     cup_2_array: function() {
-      var tf_idf = {};
-      tf_idf = {};
-      Tastings.find().forEach(function(i) {
-        total = Cuppings.find().count();
-        t = Cuppings.find({'cup' : {$in : ['2', '6', '10']}, 'tastes' : i.taste}).count();
-        d = Cuppings.find({'tastes' : i.taste}).count() + 1;
-        idf = Math.log(total/d);
-        tf_idf[i.taste] = idf * t;
-      })
-      var sortable = [];
-      for (var word in tf_idf) {
-        sortable.push([word, tf_idf[word]])
-        sortable.sort(function(a, b) {return a[1] - b[1]})
-      }
-      unique_limit = []
-      unique_limit.push(sortable[sortable.length - 1][0])
-      unique_limit.push(sortable[sortable.length - 2][0])
-      unique_limit.push(sortable[sortable.length - 3][0])
-      unique_limit.push(sortable[sortable.length - 4][0])
-      return unique_limit;
+      return CoffeeMoto.generateUniques(['2', '6', '10']);
     },
     cup_3_array: function() {
-      var tf_idf = {};
-      Tastings.find().forEach(function(i) {
-        total = Cuppings.find().count();
-        t = Cuppings.find({'cup' : {$in : ['3', '7', '11']}, 'tastes' : i.taste}).count();
-        d = Cuppings.find({'tastes' : i.taste}).count() + 1;
-        idf = Math.log(total/d);
-        tf_idf[i.taste] = idf * t;
-      })
-      var sortable = [];
-      for (var word in tf_idf) {
-        sortable.push([word, tf_idf[word]])
-        sortable.sort(function(a, b) {return a[1] - b[1]})
-      }
-      unique_limit = []
-      unique_limit.push(sortable[sortable.length - 1][0])
-      unique_limit.push(sortable[sortable.length - 2][0])
-      unique_limit.push(sortable[sortable.length - 3][0])
-      unique_limit.push(sortable[sortable.length - 4][0])
-      return unique_limit;
+      return CoffeeMoto.generateUniques(['3', '7', '11']);
     },
     cup_4_array: function() {
-      var tf_idf = {};
-      tf_idf = {};
-      Tastings.find().forEach(function(i) {
-        total = Cuppings.find().count();
-        t = Cuppings.find({'cup' : {$in : ['4', '8', '12']}, 'tastes' : i.taste}).count();
-        d = Cuppings.find({'tastes' : i.taste}).count() + 1;
-        idf = Math.log(total/d);
-        tf_idf[i.taste] = idf * t;
-      })
-      var sortable = [];
-      for (var word in tf_idf) {
-        sortable.push([word, tf_idf[word]])
-        sortable.sort(function(a, b) {return a[1] - b[1]})
-      }
-      unique_limit = []
-      unique_limit.push(sortable[sortable.length - 1][0])
-      unique_limit.push(sortable[sortable.length - 2][0])
-      unique_limit.push(sortable[sortable.length - 3][0])
-      unique_limit.push(sortable[sortable.length - 4][0])
-      return unique_limit;
+      return CoffeeMoto.generateUniques(['4', '8', '12']);
     }
   })
 
   Template.results.rendered = function() {
     var arr = {};
+    var impressions = ['overall', 'aroma', 'acidity', 'body'];
+
     Tastings.find().forEach(function(i) {
       arr[i.taste] = {};
-      arr[i.taste]['overall'] = [];
-      arr[i.taste]['aroma'] = [];
-      arr[i.taste]['acidity'] = [];
-      arr[i.taste]['body'] = [];
+
+      for (k in impressions) {
+        arr[i.taste][impressions[k]] = [];
+      }
+
       Cuppings.find({"tastes" : i.taste }).forEach(function(j) {
-
-        arr[i.taste]['overall'].push(j.impressions.overall);
-        arr[i.taste]['overall'].average = 0;
-
-        arr[i.taste]['aroma'].push(j.impressions.aroma)
-        arr[i.taste]['aroma'].average = 0;
-
-        arr[i.taste]['acidity'].push(j.impressions.acidity)
-        arr[i.taste]['acidity'].average = 0;
-
-        arr[i.taste]['body'].push(j.impressions.body)
-        arr[i.taste]['body'].average = 0;
-
+        for (k in impressions) {
+          arr[i.taste][impressions[k]].push(j.impressions.overall);
+          arr[i.taste][impressions[k]].average = 0;
+        }
       })
 
-      for (j in arr[i.taste]['overall']) {
-        arr[i.taste]['overall'].average = arr[i.taste]['overall'].average + arr[i.taste]['overall'][j]
+      for (k in impressions) {
+        for (j in arr[i.taste][impressions[k]]) {
+          arr[i.taste][impressions[k]].average = arr[i.taste][impressions[k]].average + arr[i.taste][impressions[k]][j]
+        }
       }
-      for (j in arr[i.taste]['aroma']) {
-        arr[i.taste]['aroma'].average = arr[i.taste]['aroma'].average + arr[i.taste]['aroma'][j]
+
+      for (k in impressions) {
+        arr[i.taste][impressions[k]].average = arr[i.taste][impressions[k]].average / arr[i.taste][impressions[k]].length / 2;
       }
-      for (j in arr[i.taste]['acidity']) {
-        arr[i.taste]['acidity'].average = arr[i.taste]['acidity'].average + arr[i.taste]['acidity'][j]
-      }
-      for (j in arr[i.taste]['body']) {
-        arr[i.taste]['body'].average = arr[i.taste]['body'].average + arr[i.taste]['body'][j]
-      }
-      arr[i.taste]['overall'].average = arr[i.taste]['overall'].average / arr[i.taste]['overall'].length / 2;
-      arr[i.taste]['aroma'].average = arr[i.taste]['aroma'].average / arr[i.taste]['aroma'].length / 2;
-      arr[i.taste]['acidity'].average = arr[i.taste]['acidity'].average / arr[i.taste]['acidity'].length / 2;
-      arr[i.taste]['body'].average = arr[i.taste]['body'].average / arr[i.taste]['body'].length / 2;
+
     });
-    var datum = []
 
-    datum[0] = {}
-    datum[0].name = "overall"
-    datum[0].values = []
+    var datum = [{
+      name: "overall",
+      values: []
+    }, {
+      name: "aroma",
+      values: []
+    }, {
+      name: "acidity",
+      values: []
+    }, {
+      name: "body",
+      values: []
+    }];
 
-    datum[1] = {}
-    datum[1].name = "aroma"
-    datum[1].values = []
-
-    datum[2] = {}
-    datum[2].name = "acidity"
-    datum[2].values = []
-
-    datum[3] = {}
-    datum[3].name = "body"
-    datum[3].values = []
-
-    var count = 0;
-    for (i in arr) {
-      count += 1;
-      datum[0].values[count] = {
-      x : i, y : arr[i].overall.average
-      }
-    }
-    var count = 0;
-    for (i in arr) {
-      count += 1;
-      datum[1].values[count] = {
-      x : i, y : arr[i].aroma.average
-      }
-    }
-    var count = 0;
-    for (i in arr) {
-      count += 1;
-      datum[2].values[count] = {
-      x : i, y : arr[i].acidity.average
-      }
-    }
-    var count = 0;
-    for (i in arr) {
-      count += 1;
-      datum[3].values[count] = {
-      x : i, y : arr[i].body.average
+    for (k in impressions) {
+      var count = 0;
+      for (i in arr) {
+        count += 1;
+        datum[k].values[count] = {
+        x : i, y : arr[i][impressions[k]].average
+        }
       }
     }
 
-    datum[0].values.shift();
-    datum[1].values.shift();
-    datum[2].values.shift();
-    datum[3].values.shift();
+    for (i in datum) {
+      datum[i].values.shift();
+    }
+
     var stack = d3.layout.stack()
-        .values(function(d) { return d.values});
+        .values(function(d) { return d.values}),
         layers = stack(datum);
 
     var margin = {top: 40, right: 10, bottom: 20, left: 10},
@@ -269,12 +169,7 @@ if (Meteor.isClient) {
         height = 400 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
-        .domain([
-          'bitter', 'bland', 'briny', 'buttery', 'chocolate',
-          'complex', 'flat', 'floral', 'fruity', 'grassy',
-          'harsh', 'herbal', 'full', 'light', 'lively',
-          'mellow', 'muddy', 'pungent', 'rich', 'smooth',
-          'strong', 'sweet', 'syrupy', 'watery', 'weak'])
+        .domain(Tastings.find().map(function(i) {return i.taste}))
         .rangeRoundBands([0, width], .01);
 
     var y = d3.scale.linear()
@@ -325,21 +220,16 @@ if (Meteor.isClient) {
       e.preventDefault();
       CoffeeMoto.showTemplate($('.template-visible'),'brewing',true,function() {
         $('.btn-drip').one('click',function() {
-          console.log('got here');
           CoffeeMoto.showTemplate($('.template-visible'),'brew_drip',true);
         });
         $('.btn-espresso').one('click',function() {
-          console.log('got here1');
           CoffeeMoto.showTemplate($('.template-visible'),'brew_espresso',true);
         });
         $('.btn-steaming').one('click',function() {
-          console.log('got here2');
           CoffeeMoto.showTemplate($('.template-visible'),'brew_steaming',true);
         });
-
         $('body').one('click','.back-btn',function(e) {
           CoffeeMoto.showTemplate($('.template-visible'),'brewing',true);
-          console.log('got a click');
         });
 
       });
@@ -363,7 +253,6 @@ if (Meteor.isClient) {
           CoffeeMoto.showTemplate($('.template-visible'),'add_cupping',true,function() {
             $('.avatarspace .name').text(name);
             $('.template-add_cupping').on('click','.cuppingoptions .btn',function(e) {
-                console.log('got here');
                 e.preventDefault();
                 $('.avatarspace .tastes').text('Coffee #' + $(this).text().trim());
                 CoffeeMoto.showTemplate($('.template-cupping'),'impressions',true);
@@ -396,33 +285,19 @@ if (Meteor.isClient) {
             });
             $('.template-add_cupping').on('click','.btn-finalize',function(e) {
               if (!$(this).hasClass('inactive')) {
+                var name = $('.name').text(),
+                  cupSelected = $('.tastes').text().split('#')[1],
+                  impressionSelections = [],
+                  impressionPossibles = ['overall', 'aroma', 'acidity', 'body'];
 
-                // add in data logic here, the cuppings insert
-                var name = $('.name').text();
-                var cupSelected = $('.tastes').text().split('#')[1];
+                for (k in impressionPossibles) {
+                  if ($('.selected.' + impressionPossibles).hasClass('btn-yes')) {
+                    impressionSelections.push(1);
+                  } else {
+                    impressionSelections.push(0);
+                  }
+                }
 
-                impressionSelections = [];
-
-                if ($('.selected.overall').hasClass('btn-yes')) {
-                  impressionSelections.push(1);
-                } else {
-                  impressionSelections.push(0);
-                }
-                if ($('.selected.aroma').hasClass('btn-yes')) {
-                  impressionSelections.push(1);
-                } else {
-                  impressionSelections.push(0);
-                }
-                if ($('.selected.acidity').hasClass('btn-yes')) {
-                  impressionSelections.push(1);
-                } else {
-                  impressionSelections.push(0);
-                }
-                if ($('.selected.body').hasClass('btn-yes')) {
-                  impressionSelections.push(1);
-                } else {
-                  impressionSelections.push(0);
-                }
                 var selectedTastes = $('.taste.selected').map(function() { return $(this).text(); });
                 var arr = [];
                 selectedTastes.each(function(i) { arr.push(selectedTastes[i]); });
@@ -440,8 +315,6 @@ if (Meteor.isClient) {
                   }
                 });
 
-                Cuppings.find().forEach(function(i) {console.log(i); });
-
                 CoffeeMoto.showTemplate($('.template-add_cupping'),'thanks',true,function() {
                   $('.template-thanks .btn').click(function(e) {
                     e.preventDefault();
@@ -456,7 +329,6 @@ if (Meteor.isClient) {
       });
     },
     'click .btn-results' : function() {
-      console.log('clicked');
       CoffeeMoto.showTemplate($('.template-visible'), 'results', true,function() {
         $('#chart').show();
       });
@@ -468,10 +340,8 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   // Run on startup
-  // For now, just generate a few users in the doc
-  // Also we fill in some tastings at random
   Meteor.startup(function () {
-    var tastes_corpus = [
+    var tastingWords = [
       'bitter', 'bland', 'briny', 'buttery', 'chocolate',
       'complex', 'flat', 'floral', 'fruity', 'grassy',
       'harsh', 'herbal', 'full', 'light', 'lively',
@@ -479,9 +349,9 @@ if (Meteor.isServer) {
       'strong', 'sweet', 'syrupy', 'watery', 'weak'
     ];
     if (Tastings.find().count() === 0) {
-      for (var i = 0; i < tastes_corpus.length; i++) {
+      for (var i = 0; i < tastingWords.length; i++) {
         Tastings.insert({
-          taste: tastes_corpus[i]
+          taste: tastingWords[i]
         });
       }
     }
