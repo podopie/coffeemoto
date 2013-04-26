@@ -120,6 +120,7 @@ if (Meteor.isClient) {
       unique_limit.push(sortable[sortable.length - 1][0])
       unique_limit.push(sortable[sortable.length - 2][0])
       unique_limit.push(sortable[sortable.length - 3][0])
+      unique_limit.push(sortable[sortable.length - 4][0])
       return unique_limit;
     },
     cup_3_array: function() {
@@ -140,6 +141,7 @@ if (Meteor.isClient) {
       unique_limit.push(sortable[sortable.length - 1][0])
       unique_limit.push(sortable[sortable.length - 2][0])
       unique_limit.push(sortable[sortable.length - 3][0])
+      unique_limit.push(sortable[sortable.length - 4][0])
       return unique_limit;
     },
     cup_4_array: function() {
@@ -161,6 +163,7 @@ if (Meteor.isClient) {
       unique_limit.push(sortable[sortable.length - 1][0])
       unique_limit.push(sortable[sortable.length - 2][0])
       unique_limit.push(sortable[sortable.length - 3][0])
+      unique_limit.push(sortable[sortable.length - 4][0])
       return unique_limit;
     }
   })
@@ -168,7 +171,6 @@ if (Meteor.isClient) {
   Template.results.rendered = function() {
     var arr = {};
     Tastings.find().forEach(function(i) {
-      console.log(i.taste);
       arr[i.taste] = {};
       arr[i.taste]['overall'] = [];
       arr[i.taste]['aroma'] = [];
@@ -208,59 +210,58 @@ if (Meteor.isClient) {
       arr[i.taste]['body'].average = arr[i.taste]['body'].average / arr[i.taste]['body'].length / 2;
     });
     var datum = []
-      datum[0] = [];
-      datum[1] = [];
-      datum[2] = [];
-      datum[3] = [];
-  //  datum[0] = {}
-  //  datum[0].name = "overall"
-  //  datum[0].values = []
 
-  //  datum[1] = {}
-  //  datum[1].name = "aroma"
-  //  datum[1].values = []
+    datum[0] = {}
+    datum[0].name = "overall"
+    datum[0].values = []
 
-  //  datum[2] = {}
-  //  datum[2].name = "acidity"
-  //  datum[2].values = []
+    datum[1] = {}
+    datum[1].name = "aroma"
+    datum[1].values = []
 
-  //  datum[3] = {}
-  //  datum[3].name = "body"
-  //  datum[3].values = []
+    datum[2] = {}
+    datum[2].name = "acidity"
+    datum[2].values = []
+
+    datum[3] = {}
+    datum[3].name = "body"
+    datum[3].values = []
+
     var count = 0;
     for (i in arr) {
       count += 1;
-      datum[0][count] = {
-      x : count, y : arr[i].overall.average
+      datum[0].values[count] = {
+      x : i, y : arr[i].overall.average
       }
     }
     var count = 0;
     for (i in arr) {
       count += 1;
-      datum[1][count] = {
-      x : count, y : arr[i].aroma.average
+      datum[1].values[count] = {
+      x : i, y : arr[i].aroma.average
       }
     }
     var count = 0;
     for (i in arr) {
       count += 1;
-      datum[2][count] = {
-      x : count, y : arr[i].acidity.average
+      datum[2].values[count] = {
+      x : i, y : arr[i].acidity.average
       }
     }
     var count = 0;
     for (i in arr) {
       count += 1;
-      datum[3][count] = {
-      x : count, y : arr[i].body.average
+      datum[3].values[count] = {
+      x : i, y : arr[i].body.average
       }
     }
 
-    datum[0].shift();
-    datum[1].shift();
-    datum[2].shift();
-    datum[3].shift();
-    var stack = d3.layout.stack();
+    datum[0].values.shift();
+    datum[1].values.shift();
+    datum[2].values.shift();
+    datum[3].values.shift();
+    var stack = d3.layout.stack()
+        .values(function(d) { return d.values});
         layers = stack(datum);
 
     var margin = {top: 40, right: 10, bottom: 20, left: 10},
@@ -268,7 +269,12 @@ if (Meteor.isClient) {
         height = 400 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
-        .domain(d3.range(26))
+        .domain([
+          'bitter', 'bland', 'briny', 'buttery', 'chocolate',
+          'complex', 'flat', 'floral', 'fruity', 'grassy',
+          'harsh', 'herbal', 'full', 'light', 'lively',
+          'mellow', 'muddy', 'pungent', 'rich', 'smooth',
+          'strong', 'sweet', 'syrupy', 'watery', 'weak'])
         .rangeRoundBands([0, width], .01);
 
     var y = d3.scale.linear()
@@ -298,7 +304,7 @@ if (Meteor.isClient) {
         .style("fill", function(d, i) { return color(i); });
 
     var rect = layer.selectAll("rect")
-        .data(function(d) { return d; })
+        .data(function(d) { return d.values; })
         .enter().append("rect")
         .attr("x", function(d) { return x(d.x); })
         .attr("y", function(d) { return y(d.y0 + d.y); })
@@ -313,8 +319,6 @@ if (Meteor.isClient) {
 
   Template.results.events({
   })
-
-
 
   Template.home.events({
     'click .btn-adddata' : function () {
