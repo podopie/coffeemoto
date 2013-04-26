@@ -165,8 +165,7 @@ if (Meteor.isClient) {
     }
   })
 
-
-  Template.results.cuppings_results = function () {
+  Template.results.rendered = function() {
     var arr = {};
     Tastings.find().forEach(function(i) {
       console.log(i.taste);
@@ -208,47 +207,109 @@ if (Meteor.isClient) {
       arr[i.taste]['acidity'].average = arr[i.taste]['acidity'].average / arr[i.taste]['acidity'].length / 2;
       arr[i.taste]['body'].average = arr[i.taste]['body'].average / arr[i.taste]['body'].length / 2;
     });
+    var datum = []
+      datum[0] = [];
+      datum[1] = [];
+      datum[2] = [];
+      datum[3] = [];
+  //  datum[0] = {}
+  //  datum[0].name = "overall"
+  //  datum[0].values = []
 
-    /*
-    var margin = {top: 10, right: 10, bottom: 30, left: 50},
-    width = 500 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
+  //  datum[1] = {}
+  //  datum[1].name = "aroma"
+  //  datum[1].values = []
 
-    var x = d3.scale.linear()
-    .domain(tastes_corpus.map(function(d) { return d; }))
-    .range([0, width]);
+  //  datum[2] = {}
+  //  datum[2].name = "acidity"
+  //  datum[2].values = []
+
+  //  datum[3] = {}
+  //  datum[3].name = "body"
+  //  datum[3].values = []
+    var count = 0;
+    for (i in arr) {
+      count += 1;
+      datum[0][count] = {
+      x : count, y : arr[i].overall.average
+      }
+    }
+    var count = 0;
+    for (i in arr) {
+      count += 1;
+      datum[1][count] = {
+      x : count, y : arr[i].aroma.average
+      }
+    }
+    var count = 0;
+    for (i in arr) {
+      count += 1;
+      datum[2][count] = {
+      x : count, y : arr[i].acidity.average
+      }
+    }
+    var count = 0;
+    for (i in arr) {
+      count += 1;
+      datum[3][count] = {
+      x : count, y : arr[i].body.average
+      }
+    }
+
+    datum[0].shift();
+    datum[1].shift();
+    datum[2].shift();
+    datum[3].shift();
+    var stack = d3.layout.stack();
+        layers = stack(datum);
+
+    var margin = {top: 40, right: 10, bottom: 20, left: 10},
+        width = 1440 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    var x = d3.scale.ordinal()
+        .domain(d3.range(26))
+        .rangeRoundBands([0, width], .01);
 
     var y = d3.scale.linear()
-    .domain([0,100])
-    .range([height,0]);
+        .domain([0, 5])
+        .range([height, 0]);
 
-    data = {};
+    var color = d3.scale.linear()
+        .domain([0, 4])
+        .range(["#aad", "#556"]);
 
     var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
-
-    var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
+        .scale(x)
+        .tickSize(0)
+        .tickPadding(6)
+        .orient("bottom");
 
     var svg = d3.select("#chart").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var layer = svg.selectAll(".layer")
+        .data(layers)
+        .enter().append("g")
+        .attr("class", "layer")
+        .style("fill", function(d, i) { return color(i); });
+
+    var rect = layer.selectAll("rect")
+        .data(function(d) { return d; })
+        .enter().append("rect")
+        .attr("x", function(d) { return x(d.x); })
+        .attr("y", function(d) { return y(d.y0 + d.y); })
+        .attr("width", x.rangeBand())
+        .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y);} )
 
     svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis);
-
-    svg.append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
-    */
-    return Cuppings.find({}, {sort: {user : 1}});
-  };
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+  }
 
   Template.results.events({
   })
