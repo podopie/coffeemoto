@@ -458,6 +458,7 @@ if (Meteor.isClient) {
     'click .btn-results' : function() {
       console.log('clicked');
       CoffeeMoto.showTemplate($('.template-visible'), 'results', true,function() {
+        $('#chart').show();
       });
     }
 
