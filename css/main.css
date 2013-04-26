@@ -688,7 +688,7 @@ header h1 a:hover {
   color: #2f251c;
 }
 header nav {
-  text-align: center;
+  display: none;
 }
 header nav li {
   display: inline-block;
