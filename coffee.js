@@ -115,7 +115,7 @@ if (Meteor.isClient) {
 
       Cuppings.find({"tastes" : i.taste }).forEach(function(j) {
         for (k in impressions) {
-          arr[i.taste][impressions[k]].push(j.impressions.overall);
+          arr[i.taste][impressions[k]].push(j.impressions[impressions[k]]);
           arr[i.taste][impressions[k]].average = 0;
         }
       })
@@ -301,7 +301,7 @@ if (Meteor.isClient) {
                 var selectedTastes = $('.taste.selected').map(function() { return $(this).text(); });
                 var arr = [];
                 selectedTastes.each(function(i) { arr.push(selectedTastes[i]); });
-
+		/*
                 Cuppings.insert({
                   user: name, //entered_name,
                   ISOdate: new Date(),
@@ -314,7 +314,7 @@ if (Meteor.isClient) {
                     body: impressionSelections[3]
                   }
                 });
-
+		*/
                 CoffeeMoto.showTemplate($('.template-add_cupping'),'thanks',true,function() {
                   $('.template-thanks .btn').click(function(e) {
                     e.preventDefault();
